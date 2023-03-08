@@ -1,9 +1,20 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Todos</PageTitle>
 
-<h1>Hello, world!</h1>
+<h3>Todos</h3>
 
-Welcome to your new app.
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Enter a to-do description some new new" />
+  <button class="btn btn-outline-secondary">Add</button>
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<ul class="list-group mb-3">
+  <li class="list-group-item d-flex align-items-center justify-content-between">
+    <div>
+      <input id="1" type="checkbox" class="form-check-input">
+      <label for="1" class="form-check-label" >To-do 1</label>
+    </div>
+    <input type="button" value="Delete" class="btn btn-sm btn-outline-danger" />
+  </li>
+</ul>
