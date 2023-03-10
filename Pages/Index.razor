@@ -5,23 +5,27 @@
 
 <h3>Todos</h3>
 
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Enter a to-do description some new new" />
-  <button class="btn btn-outline-secondary">Add</button>
-</div>
+@if(todos is not null)
+{
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Enter a to-do description some new new" />
+    <button class="btn btn-outline-secondary">Add</button>
+  </div>
 
-<ul class="list-group mb-3">
-  @foreach (var todo in todos)
-  {
-    <li class="list-group-item d-flex align-items-center justify-content-between">
-    <div>
-      <input  id="@todo.Id" type="checkbox" @onchange="@(e => Update(e.Value, todo))" class="form-check-input" checked="@todo.Completed">
-      <label for="@todo.Id" class="form-check-label @(todo.Completed ? "completed" : "")" >@todo.Title</label>
-    </div>
-    <input type="button" value="Delete" class="btn btn-sm btn-outline-danger" />
-  </li>
-  }
-</ul>
+  <ul class="list-group mb-3">
+    @foreach (var todo in todos)
+    {
+      <li class="list-group-item d-flex align-items-center justify-content-between">
+      <div>
+        <input  id="@todo.Id" type="checkbox" @onchange="@(e => Update(e.Value, todo))" class="form-check-input" checked="@todo.Completed">
+        <label for="@todo.Id" class="form-check-label @(todo.Completed ? "completed" : "")" >@todo.Title</label>
+      </div>
+      <input type="button" value="Delete" class="btn btn-sm btn-outline-danger" @onclick="@(e => Delete(todo))" />
+    </li>
+    }
+  </ul>
+}
+
  
 @code {
     List<Todo> todos = new() {new Todo {Id = 1, Completed = true, Title = "Todo-1 more interested naming for this todo"}};
@@ -29,4 +33,6 @@
     {
       todo.Completed = (bool)completed;
     }
+
+    void Delete(Todo todo) => todos.Remove(todo);
 }
