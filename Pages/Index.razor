@@ -1,5 +1,6 @@
 ﻿@page "/"
 
+
 <PageTitle>Todos</PageTitle>
 
 <h3>Todos</h3>
@@ -10,11 +11,22 @@
 </div>
 
 <ul class="list-group mb-3">
-  <li class="list-group-item d-flex align-items-center justify-content-between">
+  @foreach (var todo in todos)
+  {
+    <li class="list-group-item d-flex align-items-center justify-content-between">
     <div>
-      <input id="1" type="checkbox" class="form-check-input">
-      <label for="1" class="form-check-label" >To-do 1</label>
+      <input  id="@todo.Id" type="checkbox" @onchange="@(e => Update(e.Value, todo))" class="form-check-input" checked="@todo.Completed">
+      <label for="@todo.Id" class="form-check-label @(todo.Completed ? "completed" : "")" >@todo.Title</label>
     </div>
     <input type="button" value="Delete" class="btn btn-sm btn-outline-danger" />
   </li>
+  }
 </ul>
+ 
+@code {
+    List<Todo> todos = new() {new Todo {Id = 1, Completed = true, Title = "Todo-1 more interested naming for this todo"}};
+    void Update(object completed, Todo todo)
+    {
+      todo.Completed = (bool)completed;
+    }
+}
