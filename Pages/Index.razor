@@ -8,8 +8,8 @@
 @if(todos is not null)
 {
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Enter a to-do description some new new" />
-    <button class="btn btn-outline-secondary">Add</button>
+    <input type="text" @bind="@description" class="form-control" placeholder="Enter a to-do description some new new" />
+    <button class="btn btn-outline-secondary" @onclick="Add">Add</button>
   </div>
 
   <ul class="list-group mb-3">
@@ -28,6 +28,7 @@
 
  
 @code {
+    string description = string.Empty;
     List<Todo> todos = new() {new Todo {Id = 1, Completed = true, Title = "Todo-1 more interested naming for this todo"}};
     void Update(object completed, Todo todo)
     {
@@ -35,4 +36,12 @@
     }
 
     void Delete(Todo todo) => todos.Remove(todo);
+
+    void Add(){
+      if (description.Length.Equals(0)) return;
+      var id = todos.Count().Equals(0) ? 1 : todos.Max(t => t.Id) + 1;
+      var todo = new Todo  {Id = id, Completed = false, Title = description};
+      todos.Add(todo);
+      description = string.Empty;
+    }
 }
