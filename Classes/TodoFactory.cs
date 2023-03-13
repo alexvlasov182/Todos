@@ -4,7 +4,7 @@ namespace Todos.Classes;
 
 public class TodoFactory
 {
-  List<Todo> todos = new() { new Todo { Id = 1, Completed = true, Title = "!!!!" } };
+  List<Todo> todos = new() { new Todo { Id = 1, Completed = true, Title = "Do something" } };
 
   public List<Todo> Get() => todos.GetRange(0, todos.Count);
 
