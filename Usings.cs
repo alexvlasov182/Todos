@@ -1,1 +1,1 @@
-namespace Todos.Classes.Extensions;
+global using Todos.Classes.Extensions;

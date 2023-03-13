@@ -1,19 +1,26 @@
 ﻿@page "/"
 
-
 <PageTitle>Todos</PageTitle>
 
 <h3>Todos</h3>
 
-@if(todos is not null)
+@if(tf.Get() is not null)
 {
   <div class="input-group mb-3">
     <input type="text" @bind="@description" class="form-control" placeholder="Enter a to-do description some new new" />
     <button class="btn btn-outline-secondary" @onclick="Add">Add</button>
   </div>
 
+  @if(error.Length > 0)
+  {
+    <div class="alert alert-danger alert-dismissible">
+      <strong>Error</strong> @error
+      <button type="button" class="btn-close" @onclick="HideError"></button>
+    </div>
+  }
+
   <ul class="list-group mb-3">
-    @foreach (var todo in todos)
+    @foreach (var todo in tf.Get())
     {
       <li class="list-group-item d-flex align-items-center justify-content-between">
       <div>
@@ -26,22 +33,35 @@
   </ul>
 }
 
- 
 @code {
     string description = string.Empty;
-    List<Todo> todos = new() {new Todo {Id = 1, Completed = true, Title = "Todo-1 more interested naming for this todo"}};
+    string error = string.Empty;
+    
+    TodoFactory tf = new();
+
+    void HideError() => error = string.Empty;
+    
     void Update(object completed, Todo todo)
     {
-      todo.Completed = (bool)completed;
+      HideError();
+      if(!tf.Update(completed, todo))
+        error = "Couldn't update the to-do.";
     }
 
-    void Delete(Todo todo) => todos.Remove(todo);
+    void Delete(Todo todo)
+    {
+      HideError();
+      tf.Delete(todo);
+    }
 
     void Add(){
-      if (description.Length.Equals(0)) return;
-      var id = todos.Count().Equals(0) ? 1 : todos.Max(t => t.Id) + 1;
-      var todo = new Todo  {Id = id, Completed = false, Title = description};
-      todos.Add(todo);
-      description = string.Empty;
+      try
+      {
+        HideError();
+        tf.Add(description);
+        description = string.Empty;
+      }
+      catch(ArgumentException ex) { error = ex.Message; }
+      catch {error = "Couln't add the to-do."; }
     }
 }
